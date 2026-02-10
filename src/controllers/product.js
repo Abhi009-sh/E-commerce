@@ -17,13 +17,18 @@ const createProduct=asynchandler(async(req,res)=>{
     throw new ApiError(400,'name,price and countInStock are required');
 
    }
-
-   let imageUrl = null;
-   if(req.file?.path) {
-       const cloudinaryResponse = await uploadOnCloudinary(req.file.path);
-       if(cloudinaryResponse) {
-           imageUrl = cloudinaryResponse.url;
-       }
+   let imageUrlPath=null;
+   if(req.files?.imageUrl?.length){
+     imageUrlPath=req.files.imageUrl[0].path
+   }else{
+    throw new ApiError(400,'product image is required');
+   }
+   if(!imageUrlPath){
+    throw new ApiError(400,'product image is missing');
+   }
+   const image=await uploadOnCloudinary(imageUrlPath,'product');
+   if(!image){
+    throw new ApiError(500,'failed to upload product image');
    }
 
    const product=await Product.create({

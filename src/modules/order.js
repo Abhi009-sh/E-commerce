@@ -42,7 +42,6 @@ import mongoose from 'mongoose';
    itemPrice:Number,
    taxPrice:Number,
    shippingPrice:Number,
-   totalPrice:Number,
    status:{
     type:String,
     enum:['Pending','Processing','Shipped','Delivered','Cancelled'],
